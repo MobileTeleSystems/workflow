@@ -4,7 +4,6 @@
 
 workflow.yml
 ```
-
 test:
   states:
     - started
@@ -16,16 +15,18 @@ test:
         - from: started
           to: paused
           who: [student, teacher]
-        - from: finished
-          to: paused
-          who: [student]
-
 ```
+Usage:
 ```
 $registry = new \Workflow\Registry();
 $registry->load('workflow.yml');
-$workflow = $registry->get('test');
-$action = new \Workflow\Action('started', 'pause', 'student');
-$workflow->can($action); //true
-/** \Workflow\Contracts\Command $command */
-$workflow->make($action, $command);
+
+$definition = $registry->get('test');
+$subject    = new TestSubject();
+$who        = new Student();
+$context    = new SomeContext();
+$workflow   = new \Workflow\Workflow($subject, $definition)
+
+$workflow->can('pause', $student); //true
+
+$workflow->make('pause', $student, $context);
