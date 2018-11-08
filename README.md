@@ -2,9 +2,13 @@
 
 ## Example
 
+RUN docker-compose up -d
+
+RUN docker exec workflow bash -c 'cd example && php example.php'
+
 workflow.yml
 ```
-test:
+lesson:
   states:
     - started
     - paused
@@ -15,18 +19,57 @@ test:
         - from: started
           to: paused
           who: [student, teacher]
+    - name: answer
+      routes:
+        - from: started
+          to: started
+          who: [student]
+    - name: start
+      routes:
+        - from: paused
+          to: started
+          who: [student, teacher]
+    - name: finish
+      routes:
+        - from: paused
+          to: finished
+          who: [student]
+        - from: started
+          to: finished
+          who: [student]        
 ```
 Usage:
 ```
+
 $registry = new \Workflow\Registry();
 $registry->load('workflow.yml');
 
-$definition = $registry->get('test');
-$subject    = new TestSubject();
-$who        = new Student();
-$context    = new SomeContext();
-$workflow   = new \Workflow\Workflow($subject, $definition)
+$definition = $registry->get('lesson');
+$lesson     = new \WorkflowExample\Subject\Lesson();
 
-$workflow->can('pause', $student); //true
+$student    = new \WorkflowExample\Who\Student();
+$teacher    = new \WorkflowExample\Who\Teacher();
 
-$workflow->make('pause', $student, $context);
+$answer     = new \WorkflowExample\Context\AnswerContext();
+
+$workflow   = new \Workflow\Workflow($lesson, $definition);
+
+$lesson->report(); // Current state: started
+
+
+$workflow->can('answer', $teacher); // false
+
+$workflow->make('answer', $student, $answer);
+// student executed command: answer. Question #1, answer: answer to the first question 
+
+$workflow->make('pause', $teacher);
+// teacher executed command: pause
+// Current state: paused
+
+$workflow->make('start', $teacher);
+// teacher executed command: start
+// Current state: started
+
+$workflow->make('finish', $student);
+// student executed command: finish
+// Current state: finished

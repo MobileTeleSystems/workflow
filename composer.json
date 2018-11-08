@@ -21,7 +21,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Workflow\\": "src/"
+      "Workflow\\": "src/",
+      "WorkflowExample\\": "example/"
     }
   },
   "minimum-stability": "dev",
