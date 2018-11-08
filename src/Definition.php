@@ -12,7 +12,7 @@ use LogicException;
  * Class Definition
  * @package Workflow
  */
-class Definition implements Assignable
+final class Definition implements Assignable
 {
     use Assigner;
 
@@ -56,7 +56,7 @@ class Definition implements Assignable
         $this->transitions->each(function (Transition $transition) {
             $transition->getRoutes()->each(function (Route $route) use ($transition) {
                 $this->throwErrorOnIllegalState($route->getFrom(), $transition->getName());
-                $this->throwErrorOnIllegalState($route->getFrom(), $transition->getName());
+                $this->throwErrorOnIllegalState($route->getTo(), $transition->getName());
             });
         });
     }

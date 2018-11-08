@@ -4,7 +4,10 @@ namespace Workflow;
 
 
 use LogicException;
-use Workflow\Contracts\Command;
+use Workflow\Contracts\Context;
+use Workflow\Contracts\Subject;
+use Workflow\Contracts\Who;
+use Workflow\Who\Anybody;
 
 /**
  * Class Workflow
@@ -13,31 +16,37 @@ use Workflow\Contracts\Command;
 class Workflow
 {
     /**
+     * @var Subject
+     */
+    protected $subject;
+
+    /**
      * @var Definition
      */
-    private $definition;
+    protected $definition;
 
     /**
      * Workflow constructor.
-     *
+     * @param Subject $subject
      * @param Definition $definition
      */
-    public function __construct(Definition $definition)
+    public function __construct(Subject $subject, Definition $definition)
     {
+        $this->subject    = $subject;
         $this->definition = $definition;
     }
 
     /**
-     * @param Action $action
-     *
+     * @param string $command
+     * @param Who|null $who
      * @return bool
      */
-    public function can(Action $action): bool
+    public function can(string $command, Who $who = null): bool
     {
-        /** @var Transition $transition */
+        /** @var Transition|null $transition */
         $transition = $this->definition->getTransitions()->first(
-            function (Transition $transition) use ($action) {
-                return $transition->getName() === $action->getTransition();
+            function (Transition $defined) use ($command) {
+                return $command === $defined->getName();
             }
         );
 
@@ -45,40 +54,45 @@ class Workflow
             return false;
         }
 
-        return null !== $transition
-                ->getRoutes()
-                ->first(function (Route $route) use ($action) {
-                    return $route->getFrom() === $action->getState() &&
-                        ($route->getWho()->isEmpty() || $route->getWho()->contains($action->getWho()));
-                });
+        $who = $who ?? new Anybody;
+
+        $route = $transition->getRoutes()->first(
+            function (Route $route) use ($who) {
+                return $route->isFrom($this->subject->getState()) &&
+                    ($route->isAllowedForAnybody() || $route->isAllowed($who));
+            }
+        );
+
+        return null !== $route;
     }
 
     /**
-     * @param Action  $action
-     * @param Command $command
-     *
+     * @param string $command
+     * @param Who|null $who
+     * @param Context|null $context
      * @return mixed
      */
-    public function make(Action $action, Command $command)
+    public function make(string $command, Who $who = null, Context $context = null)
     {
-        if (!$this->can($action)) {
-            $this->throwTransitionError($action);
+        if (!$this->can($command, $who)) {
+            $this->throwTransitionError($command, $who);
         }
+
+        $command = $this->subject->getCommandFactory()->create($command, $who, $context);
 
         return $command->execute();
     }
 
     /**
-     * @param Action $action
+     * @param string $command
+     * @param Who|null $who
      */
-    private function throwTransitionError(Action $action): void
+    private function throwTransitionError(string  $command, Who $who = null): void
     {
-        $error = sprintf(
-            'Can not make transition "%s" on state "%s"', $action->getTransition(), $action->getState()
-        );
+        $error = sprintf('Can not make transition "%s" on state "%s"', $command, $this->subject->getState());
 
-        if ($action->getWho()) {
-            $error .= sprintf(' by "%s"', $action->getWho());
+        if (null !== $who) {
+            $error .= sprintf(' by %s', implode(' or ', $who->getRoles()->toArray()));
         }
 
         throw new LogicException($error);

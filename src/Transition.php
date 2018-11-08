@@ -11,7 +11,7 @@ use Assigner\Collection;
  * Class Transition
  * @package Workflow
  */
-class Transition implements Assignable
+final class Transition implements Assignable
 {
     use Assigner;
 
@@ -27,9 +27,11 @@ class Transition implements Assignable
 
     /**
      * Transition constructor.
+     * @param string|null $name
      */
-    public function __construct()
+    public function __construct(string $name = null)
     {
+        $this->name = $name;
         $this->initCollection('routes', Route::class);
     }
 

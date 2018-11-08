@@ -9,28 +9,28 @@ use Illuminate\Support\Collection;
  * Class Registry
  * @package Workflow
  */
-class Registry
+final class Registry
 {
     /**
-     * @var Collection|Workflow[]
+     * @var Collection|Definition[]
      */
-    private $workflows;
+    private $list;
 
     /**
      * Registry constructor.
      */
     public function __construct()
     {
-        $this->workflows = new Collection;
+        $this->list = new Collection;
     }
 
     /**
      * @param string   $name
-     * @param Workflow $workflow
+     * @param Definition $workflow
      */
-    public function add(string $name, Workflow $workflow)
+    public function add(string $name, Definition $workflow)
     {
-        $this->workflows->put($name, $workflow);
+        $this->list->put($name, $workflow);
     }
 
     /**
@@ -40,7 +40,7 @@ class Registry
      */
     public function get(string $name): ?Workflow
     {
-        return $this->workflows->get($name);
+        return $this->list->get($name);
     }
 
     /**
@@ -48,8 +48,6 @@ class Registry
      */
     public function load(string $file): void
     {
-        $parser = new Parser($file);
-
-        $this->workflows = $parser->parse();
+        $this->list = (new Parser)->parse($file);
     }
 }

@@ -11,43 +11,30 @@ use Symfony\Component\Yaml\Yaml;
  * Class Parser
  * @package Workflow
  */
-class Parser
+final class Parser
 {
     /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * Parser constructor.
+     * @param string $file
      *
-     * @param string $path
-     */
-    public function __construct(string $path)
-    {
-        $this->path = $path;
-    }
-
-    /**
      * @return Collection
      */
-    public function parse(): Collection
+    public function parse(string $file): Collection
     {
-        if (!is_readable($this->path)) {
+        if (!is_readable($file)) {
             throw new RuntimeException('Configuration file does not exists or can not be read');
         }
 
-        $data      = Yaml::parse(file_get_contents($this->path));
-        $workflows = new Collection();
+        $data = Yaml::parse(file_get_contents($file));
+        $list = new Collection();
 
-        foreach ($data as $name => $definitionData) {
+        foreach ($data as $name => $config) {
             $definition = new Definition();
-            $definition->assign($definitionData);
+            $definition->assign($config);
             $definition->validate();
 
-            $workflows->put($name, new Workflow($definition));
+            $list->put($name, $definition);
         }
 
-        return $workflows;
+        return $list;
     }
 }
