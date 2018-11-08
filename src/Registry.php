@@ -26,19 +26,19 @@ final class Registry
 
     /**
      * @param string   $name
-     * @param Definition $workflow
+     * @param Definition $definition
      */
-    public function add(string $name, Definition $workflow)
+    public function add(string $name, Definition $definition)
     {
-        $this->list->put($name, $workflow);
+        $this->list->put($name, $definition);
     }
 
     /**
      * @param string $name
      *
-     * @return null|Workflow
+     * @return null|Definition
      */
-    public function get(string $name): ?Workflow
+    public function get(string $name): ?Definition
     {
         return $this->list->get($name);
     }
