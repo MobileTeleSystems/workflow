@@ -3,15 +3,19 @@
 require_once '../vendor/autoload.php';
 
 $registry = new \Workflow\Registry();
-$registry->load('workflow.yml');
+$parser   = new \Workflow\Parser();
+$parser
+    ->parseYaml('workflow.yml')
+    ->each(function ($definition, $name) use ($registry) {
+        $registry->add($name, $definition);
+    });
 
 $definition = $registry->get('lesson');
-$lesson = new \WorkflowExample\Subject\Lesson();
-$student = new \WorkflowExample\Who\Student();
-$teacher = new \WorkflowExample\Who\Teacher();
-$answer = new \WorkflowExample\Context\AnswerContext();
-
-$workflow = new \Workflow\Workflow($lesson, $definition);
+$lesson     = new \WorkflowExample\Subject\Lesson();
+$student    = new \WorkflowExample\Who\Student();
+$teacher    = new \WorkflowExample\Who\Teacher();
+$answer     = new \WorkflowExample\Context\AnswerContext();
+$workflow   = new \Workflow\Workflow($lesson, $definition);
 
 $lesson->report();
 print PHP_EOL;

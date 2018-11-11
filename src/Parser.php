@@ -18,13 +18,27 @@ final class Parser
      *
      * @return Collection
      */
-    public function parse(string $file): Collection
+    public function parseYaml(string $file): Collection
     {
         if (!is_readable($file)) {
             throw new RuntimeException('Configuration file does not exists or can not be read');
         }
 
         $data = Yaml::parse(file_get_contents($file));
+
+        if(!\is_array($data)) {
+            throw new RuntimeException('Configuration file can not be parsed');
+        }
+
+        return $this->parseArray($data);
+    }
+
+    /**
+     * @param array $data
+     * @return Collection
+     */
+    public function parseArray(array $data): Collection
+    {
         $list = new Collection();
 
         foreach ($data as $name => $config) {

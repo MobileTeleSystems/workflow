@@ -42,12 +42,4 @@ final class Registry
     {
         return $this->list->get($name);
     }
-
-    /**
-     * @param string $file
-     */
-    public function load(string $file): void
-    {
-        $this->list = (new Parser)->parse($file);
-    }
 }
