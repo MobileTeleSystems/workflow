@@ -1,44 +1,16 @@
 # Simple workflow
 
+## Installation
+
+    composer require php-utils/workflow
+
 ## Example
 
 RUN docker-compose up -d
 
 RUN docker exec workflow bash -c 'cd example && php example.php'
 
-workflow.yml
-```
-lesson:
-  states:
-    - started
-    - paused
-    - finished
-  transitions:
-    - name: pause
-      routes:
-        - from: started
-          to: paused
-          who: [student, teacher]
-    - name: answer
-      routes:
-        - from: started
-          to: started
-          who: [student]
-    - name: start
-      routes:
-        - from: paused
-          to: started
-          who: [student, teacher]
-    - name: finish
-      routes:
-        - from: paused
-          to: finished
-          who: [student]
-        - from: started
-          to: finished
-          who: [student]        
-```
-Usage:
+## Usage
 ```
 
 $registry = new \Workflow\Registry();
@@ -73,3 +45,39 @@ $workflow->make('start', $teacher);
 $workflow->make('finish', $student);
 // student executed command: finish
 // Current state: finished
+```
+
+
+workflow.yml
+```
+lesson:
+  states:
+    - started
+    - paused
+    - finished
+  transitions:
+    - name: pause
+      routes:
+        - from: started
+          to: paused
+          who: [student, teacher]
+    - name: answer
+      routes:
+        - from: started
+          to: started
+          who: [student]
+    - name: start
+      routes:
+        - from: paused
+          to: started
+          who: [student, teacher]
+    - name: finish
+      routes:
+        - from: paused
+          to: finished
+          who: [student]
+        - from: started
+          to: finished
+          who: [student]        
+```
+
