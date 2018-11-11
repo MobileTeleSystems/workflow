@@ -5,7 +5,7 @@ namespace WorkflowExample\Commands;
 
 class Pause extends LessonCommand
 {
-    public function execute()
+    public function handle()
     {
         printf('%s executed command: pause', implode(' ', $this->who->getRoles()->toArray()));
         print PHP_EOL;

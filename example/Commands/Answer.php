@@ -7,7 +7,7 @@ use WorkflowExample\Context\AnswerContext;
 
 class Answer extends LessonCommand
 {
-    public function execute()
+    public function handle()
     {
         if (!$this->context instanceof AnswerContext) {
             throw new \InvalidArgumentException('Wrong context for command "Answer"');

@@ -5,7 +5,7 @@ namespace WorkflowExample\Commands;
 
 class Finish extends LessonCommand
 {
-    public function execute()
+    public function handle()
     {
         printf('%s executed command: finish', implode(' ', $this->who->getRoles()->toArray()));
         print PHP_EOL;

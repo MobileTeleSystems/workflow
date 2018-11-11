@@ -17,5 +17,5 @@ interface Command
      */
     public function __construct(Subject $subject, Who $who = null, Context $context = null);
 
-    public function execute();
+    public function handle();
 }

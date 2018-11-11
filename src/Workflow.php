@@ -90,7 +90,7 @@ class Workflow
      */
     protected function run(Command $command)
     {
-        return $command->execute();
+        return $command->handle();
     }
 
     /**
