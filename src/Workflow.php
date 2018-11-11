@@ -4,6 +4,7 @@ namespace Workflow;
 
 
 use LogicException;
+use Workflow\Contracts\Command;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;
@@ -80,6 +81,15 @@ class Workflow
 
         $command = $this->subject->getCommandFactory()->create($command, $who, $context);
 
+        return $this->run($command);
+    }
+
+    /**
+     * @param Command $command
+     * @return mixed
+     */
+    protected function run(Command $command)
+    {
         return $command->execute();
     }
 
