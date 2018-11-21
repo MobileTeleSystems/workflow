@@ -77,7 +77,7 @@ final class Route implements Assignable
      */
     public function isAllowed(Who $who): bool
     {
-        return $this->getWho()->intersect($who->getRoles())->isNotEmpty();
+        return \count(array_intersect($who->getRoles(), $this->getWho()->toArray())) > 0;
     }
 
     /**

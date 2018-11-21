@@ -15,7 +15,7 @@ class Answer extends LessonCommand
 
         printf(
             '%s executed command: answer. Question #%s, answer: %s ',
-            implode(' ', $this->who->getRoles()->toArray()),
+            implode(' ', $this->who->getRoles()),
             $this->context->question,
             $this->context->answer
         );

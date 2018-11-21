@@ -3,7 +3,6 @@
 namespace Workflow\Who;
 
 
-use Illuminate\Support\Collection;
 use Workflow\Contracts\Who;
 
 /**
@@ -13,10 +12,10 @@ use Workflow\Contracts\Who;
 final class Anybody implements Who
 {
     /**
-     * @return Collection
+     * @return array
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return new Collection;
+        return [];
     }
 }

@@ -7,8 +7,8 @@ use Workflow\Contracts\Who;
 
 class Student implements Who
 {
-    public function getRoles()
+    public function getRoles(): array
     {
-        return collect('student');
+        return ['student'];
     }
 }

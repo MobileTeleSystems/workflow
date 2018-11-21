@@ -10,7 +10,7 @@ namespace Workflow\Contracts;
 interface Who
 {
     /**
-     * @return \Illuminate\Support\Collection|string[]
+     * @return array|string[]
      */
-    public function getRoles();
+    public function getRoles(): array;
 }
