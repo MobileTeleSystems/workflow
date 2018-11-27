@@ -102,7 +102,7 @@ class Workflow
         $error = sprintf('Can not make transition "%s" on state "%s"', $command, $this->subject->getState());
 
         if (null !== $who) {
-            $error .= sprintf(' by %s', implode(' or ', $who->getRoles()->toArray()));
+            $error .= sprintf(' by %s', implode(' or ', $who->getRoles()));
         }
 
         throw new LogicException($error);
