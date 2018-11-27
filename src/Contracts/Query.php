@@ -4,9 +4,9 @@ namespace Workflow\Contracts;
 
 
 /**
- * Interface Command
+ * Interface Query
  * @package Workflow\Contracts
  */
-interface Command extends Action
+interface Query extends Action
 {
 }

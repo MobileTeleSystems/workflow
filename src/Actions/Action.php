@@ -1,20 +1,19 @@
 <?php
 
-namespace Workflow\Commands;
+namespace Workflow\Actions;
 
 
-use Workflow\Context\EmptyContext;
-use Workflow\Contracts\Command as CommandContract;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;
+use Workflow\Context\EmptyContext;
 use Workflow\Who\Anybody;
 
 /**
- * Class Command
+ * Class Action
  * @package Workflow\Commands
  */
-abstract class Command implements CommandContract
+abstract class Action
 {
     /**
      * @var Subject
@@ -33,8 +32,9 @@ abstract class Command implements CommandContract
 
     /**
      * Command constructor.
-     * @param Subject $subject
-     * @param Who|null $who
+     *
+     * @param Subject      $subject
+     * @param Who|null     $who
      * @param Context|null $context
      */
     public function __construct(Subject $subject, Who $who = null, Context $context = null)

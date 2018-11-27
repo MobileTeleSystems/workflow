@@ -25,7 +25,7 @@ final class Registry
     }
 
     /**
-     * @param string   $name
+     * @param string     $name
      * @param Definition $definition
      */
     public function add(string $name, Definition $definition)

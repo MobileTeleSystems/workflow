@@ -27,6 +27,7 @@ final class Transition implements Assignable
 
     /**
      * Transition constructor.
+     *
      * @param string|null $name
      */
     public function __construct(string $name = null)

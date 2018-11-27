@@ -3,12 +3,13 @@
 namespace WorkflowExample\Commands;
 
 
-use Workflow\Commands\Factory as CommandFactory;
+use Workflow\Actions\ActionFactory;
 use Workflow\Contracts\Command;
+use Workflow\Contracts\CommandFactory;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Who;
 
-class Factory extends CommandFactory
+class Factory extends ActionFactory implements CommandFactory
 {
     public function create(string $command, Who $who = null, Context $context = null): Command
     {

@@ -4,24 +4,24 @@ namespace Workflow\Contracts;
 
 
 /**
- * Interface CommandFactory
+ * Interface QueryFactory
  * @package Workflow\Contracts
  */
-interface CommandFactory
+interface QueryFactory
 {
     /**
-     * CommandFactory constructor.
+     * QueryFactory constructor.
      *
      * @param Subject $subject
      */
     public function __construct(Subject $subject);
 
     /**
-     * @param string       $command
+     * @param string       $query
      * @param Who|null     $who
      * @param Context|null $context
      *
-     * @return Command
+     * @return Query
      */
-    public function create(string $command, Who $who = null, Context $context = null): Command;
+    public function create(string $query, Who $who = null, Context $context = null): Query;
 }

@@ -1,16 +1,15 @@
 <?php
 
-namespace Workflow\Commands;
+namespace Workflow\Actions;
 
 
-use Workflow\Contracts\CommandFactory;
 use Workflow\Contracts\Subject;
 
 /**
- * Class Factory
+ * Class CommandFactory
  * @package Workflow\Commands
  */
-abstract class Factory implements CommandFactory
+abstract class ActionFactory
 {
     /**
      * @var Subject
@@ -18,7 +17,8 @@ abstract class Factory implements CommandFactory
     protected $subject;
 
     /**
-     * Factory constructor.
+     * CommandFactory constructor.
+     *
      * @param Subject $subject
      */
     public function __construct(Subject $subject)

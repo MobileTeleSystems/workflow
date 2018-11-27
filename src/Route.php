@@ -73,6 +73,7 @@ final class Route implements Assignable
 
     /**
      * @param Who $who
+     *
      * @return bool
      */
     public function isAllowed(Who $who): bool
@@ -82,6 +83,7 @@ final class Route implements Assignable
 
     /**
      * @param string $state
+     *
      * @return bool
      */
     public function isFrom(string $state): bool
