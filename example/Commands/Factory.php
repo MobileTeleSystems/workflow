@@ -4,8 +4,8 @@ namespace WorkflowExample\Commands;
 
 
 use Workflow\Actions\ActionFactory;
-use Workflow\Contracts\Command;
-use Workflow\Contracts\CommandFactory;
+use Workflow\Contracts\Actions\Command;
+use Workflow\Contracts\Actions\CommandFactory;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Who;
 

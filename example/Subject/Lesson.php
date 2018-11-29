@@ -3,7 +3,7 @@
 namespace WorkflowExample\Subject;
 
 
-use Workflow\Contracts\CommandFactory as FactoryContract;
+use Workflow\Contracts\Actions\CommandFactory as FactoryContract;
 use Workflow\Contracts\Subject;
 use WorkflowExample\Commands\Factory;
 

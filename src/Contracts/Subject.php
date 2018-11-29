@@ -3,6 +3,8 @@
 namespace Workflow\Contracts;
 
 
+use Workflow\Contracts\Actions\CommandFactory;
+
 /**
  * Interface Subject
  * @package Workflow\Contracts

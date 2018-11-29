@@ -1,6 +1,6 @@
 <?php
 
-namespace Workflow\Contracts;
+namespace Workflow\Contracts\Actions;
 
 
 /**

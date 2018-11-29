@@ -4,7 +4,7 @@ namespace WorkflowExample\Commands;
 
 
 use Workflow\Actions\Action;
-use Workflow\Contracts\Command;
+use Workflow\Contracts\Actions\Command;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;

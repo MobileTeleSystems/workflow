@@ -5,19 +5,17 @@ namespace Workflow;
 
 use LogicException;
 use Workflow\Contracts\CanBeAsked;
-use Workflow\Contracts\Command;
+use Workflow\Contracts\Actions\Command;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;
-use Workflow\Contracts\Performer;
-use Workflow\Contracts\Responder;
 use Workflow\Who\Anybody;
 
 /**
  * Class Workflow
  * @package Workflow
  */
-class Workflow implements Performer, Responder
+class Workflow
 {
     /**
      * @var Subject
@@ -62,14 +60,12 @@ class Workflow implements Performer, Responder
 
         $who = $who ?? new Anybody;
 
-        $route = $transition->getRoutes()->first(
+        return null !== $transition->getRoutes()->first(
             function (Route $route) use ($who) {
                 return $route->isFrom($this->subject->getState()) &&
                     ($route->isAllowedForAnybody() || $route->isAllowed($who));
             }
         );
-
-        return null !== $route;
     }
 
     /**

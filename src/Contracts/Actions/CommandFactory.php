@@ -1,7 +1,11 @@
 <?php
 
-namespace Workflow\Contracts;
+namespace Workflow\Contracts\Actions;
 
+
+use Workflow\Contracts\Context;
+use Workflow\Contracts\Subject;
+use Workflow\Contracts\Who;
 
 /**
  * Interface CommandFactory
