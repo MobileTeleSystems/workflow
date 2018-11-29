@@ -4,7 +4,8 @@ namespace Workflow;
 
 
 use LogicException;
-use Workflow\Contracts\Command;
+use Workflow\Contracts\CanBeAsked;
+use Workflow\Contracts\Actions\Command;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;
@@ -28,7 +29,8 @@ class Workflow
 
     /**
      * Workflow constructor.
-     * @param Subject $subject
+     *
+     * @param Subject    $subject
      * @param Definition $definition
      */
     public function __construct(Subject $subject, Definition $definition)
@@ -38,8 +40,9 @@ class Workflow
     }
 
     /**
-     * @param string $command
+     * @param string   $command
      * @param Who|null $who
+     *
      * @return bool
      */
     public function can(string $command, Who $who = null): bool
@@ -57,20 +60,19 @@ class Workflow
 
         $who = $who ?? new Anybody;
 
-        $route = $transition->getRoutes()->first(
+        return null !== $transition->getRoutes()->first(
             function (Route $route) use ($who) {
                 return $route->isFrom($this->subject->getState()) &&
                     ($route->isAllowedForAnybody() || $route->isAllowed($who));
             }
         );
-
-        return null !== $route;
     }
 
     /**
-     * @param string $command
-     * @param Who|null $who
+     * @param string       $command
+     * @param Who|null     $who
      * @param Context|null $context
+     *
      * @return mixed
      */
     public function make(string $command, Who $who = null, Context $context = null)
@@ -85,7 +87,24 @@ class Workflow
     }
 
     /**
+     * @param string       $query
+     * @param Who|null     $who
+     * @param Context|null $context
+     *
+     * @return mixed
+     */
+    public function ask(string $query, Who $who = null, Context $context = null)
+    {
+        if ($this->subject instanceof CanBeAsked) {
+            return $this->subject->getQueryFactory()->create($query, $who, $context)->handle();
+        }
+
+        throw new LogicException(sprintf('"%s" does not support responding queries', get_class($this->subject)));
+    }
+
+    /**
      * @param Command $command
+     *
      * @return mixed
      */
     protected function run(Command $command)
@@ -94,10 +113,10 @@ class Workflow
     }
 
     /**
-     * @param string $command
+     * @param string   $command
      * @param Who|null $who
      */
-    private function throwTransitionError(string  $command, Who $who = null): void
+    private function throwTransitionError(string $command, Who $who = null): void
     {
         $error = sprintf('Can not make transition "%s" on state "%s"', $command, $this->subject->getState());
 

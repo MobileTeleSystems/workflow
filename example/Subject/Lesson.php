@@ -3,7 +3,7 @@
 namespace WorkflowExample\Subject;
 
 
-use Workflow\Contracts\CommandFactory;
+use Workflow\Contracts\Actions\CommandFactory as FactoryContract;
 use Workflow\Contracts\Subject;
 use WorkflowExample\Commands\Factory;
 
@@ -21,7 +21,7 @@ class Lesson implements Subject
         return $this->state;
     }
 
-    public function getCommandFactory(): CommandFactory
+    public function getCommandFactory(): FactoryContract
     {
         return new Factory($this);
     }

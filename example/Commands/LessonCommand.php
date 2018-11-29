@@ -3,13 +3,14 @@
 namespace WorkflowExample\Commands;
 
 
-use Workflow\Commands\Command;
+use Workflow\Actions\Action;
+use Workflow\Contracts\Actions\Command;
 use Workflow\Contracts\Context;
 use Workflow\Contracts\Subject;
 use Workflow\Contracts\Who;
 use WorkflowExample\Subject\Lesson;
 
-abstract class LessonCommand extends Command
+abstract class LessonCommand extends Action implements Command
 {
     public function __construct(Subject $subject, ?Who $who = null, ?Context $context = null)
     {
